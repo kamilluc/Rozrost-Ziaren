@@ -14,8 +14,8 @@ import javafx.stage.Stage;
  */
 public class myApp extends Application {
 
-private static final int windowHeight=400;
-private static final int windowWidth=600;
+private static final int appHeight=100;
+private static final int appWidth=150;
 private static final int pixelSize=4;
 
     public static void main(String[] args){
@@ -26,7 +26,7 @@ private static final int pixelSize=4;
     public void start(Stage primaryStage) {
         primaryStage.setTitle("myApp");
         Group root = new Group();
-        Canvas canvas = new Canvas(windowWidth, windowHeight);
+        Canvas canvas = new Canvas(appWidth*pixelSize, appHeight*pixelSize);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         drawShapes(gc);
         //test
@@ -51,11 +51,14 @@ private static final int pixelSize=4;
 
     private void drawShapes(GraphicsContext gc) {
         //add game logic and dabru foru show rectangle
-        for(int i=0;i<windowHeight/pixelSize;i++){
-            for(int j=0;j<windowWidth/pixelSize;j++){
-                gc.setFill(Color.ALICEBLUE);
-                //tu musi byc oblsuga mapy z logiki a nie fill od j,i
-                gc.fillRect(j,i,pixelSize,pixelSize);
+        Logic logic=new Logic(appWidth,appHeight,5);
+        logic.start();
+        for(int i=0;i<200;i++)
+        logic.nextStep();
+        for(int i=0;i<appHeight;i++){
+            for(int j=0;j<appWidth;j++){
+                gc.setFill(logic.map[i+1][j+1].getColor());
+                gc.fillRect(j*pixelSize,i*pixelSize,pixelSize,pixelSize);
             }
         }
     }

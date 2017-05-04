@@ -4,8 +4,10 @@
 public class Main {
 
     public static void main(String[] args){
-        Logic logic=new Logic(30,20,4);
+        Logic logic=new Logic(30,30,2);
         logic.start();
+        logic.show();
+        logic.nextStep();
         logic.show();
     }
 }
