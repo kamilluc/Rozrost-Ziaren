@@ -14,9 +14,9 @@ import javafx.stage.Stage;
  */
 public class myApp extends Application {
 
-private static final int appHeight=100;
-private static final int appWidth=150;
-private static final int pixelSize=4;
+private static final int appHeight=100*4;
+private static final int appWidth=150*4;
+private static final int pixelSize=1;
 
     public static void main(String[] args){
         launch(args);
@@ -50,13 +50,18 @@ private static final int pixelSize=4;
     }
 
     private void drawShapes(GraphicsContext gc) {
-        //add game logic and dabru foru show rectangle
         Logic logic = new Logic(appWidth, appHeight, 150);
+        logic.setNeigh(1);
+//        setNeigh: 0 moore
+//                  1 neumann
+//                  2 hexaLeft
+//                  3 hexaRight
+//                  4 hexaRand
+//                  5 pentaRand
         logic.start();
-//        for (int i = 0; i < 1; i++)
-//            logic.nextStep();
+
         while (logic.emptyFields() > 0){
-           // System.out.println(logic.emptyFields());
+            System.out.println(logic.emptyFields());
             logic.nextStep();
         }
 

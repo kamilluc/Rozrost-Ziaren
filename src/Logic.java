@@ -10,6 +10,8 @@ public class Logic {
     public Cell[][] map,newmap;
     private int width,height;
     private int firstGeneration;
+    private int neigh=0;
+    boolean choice=false;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -77,45 +79,239 @@ public class Logic {
         return x;
     }
 
+    private void moore(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j-1].isState()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setState(true);
+            }
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i-1][j+1].isState()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setState(true);
+            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j-1].isState()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+            if(!map[i+1][j+1].isState()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setState(true);
+            }
+    }
+    }
+
+    private void neumann(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+        }
+    }
+
+    private void hexaLeft(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j-1].isState()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setState(true);
+            }
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+            if(!map[i+1][j+1].isState()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setState(true);
+            }
+        }
+    }
+
+    private void hexaRight(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i-1][j+1].isState()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setState(true);
+            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j-1].isState()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+        }
+    }
+
+    private void pentLeft(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j-1].isState()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setState(true);
+            }
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+
+            if(!map[i+1][j-1].isState()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+                    }
+    }
+
+    private void pentRight(int i, int j){
+        if(map[i][j].isState()) {
+
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i-1][j+1].isState()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+            if(!map[i+1][j+1].isState()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setState(true);
+            }
+        }
+    }
+    private void pentaTop(int i, int j){
+        if(map[i][j].isState()) {
+//            if(!map[i-1][j-1].isState()){
+//                newmap[i-1][j-1].setColor(map[i][j].getColor());
+//                newmap[i-1][j-1].setState(true);
+//            }
+//            if(!map[i-1][j].isState()){
+//                newmap[i-1][j].setColor(map[i][j].getColor());
+//                newmap[i-1][j].setState(true);
+//            }
+//            if(!map[i-1][j+1].isState()){
+//                newmap[i-1][j+1].setColor(map[i][j].getColor());
+//                newmap[i-1][j+1].setState(true);
+//            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+            if(!map[i+1][j-1].isState()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setState(true);
+            }
+            if(!map[i+1][j].isState()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setState(true);
+            }
+            if(!map[i+1][j+1].isState()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setState(true);
+            }
+        }
+    }
+
     public void nextStep(){
         for(int i=1;i<height-1;i++){
             for(int j=1;j<width-1;j++){
-                if(map[i][j].isState()) {
-                    if(!map[i-1][j-1].isState()){
-                        newmap[i-1][j-1].setColor(map[i][j].getColor());
-                        newmap[i-1][j-1].setState(true);
-                    }
-                    if(!map[i-1][j].isState()){
-                        newmap[i-1][j].setColor(map[i][j].getColor());
-                        newmap[i-1][j].setState(true);
-                    }
-                    if(!map[i-1][j+1].isState()){
-                        newmap[i-1][j+1].setColor(map[i][j].getColor());
-                        newmap[i-1][j+1].setState(true);
-                    }
-                    if(!map[i][j-1].isState()){
-                        newmap[i][j-1].setColor(map[i][j].getColor());
-                        newmap[i][j-1].setState(true);
-                    }
-                    if(!map[i][j+1].isState()){
-                        newmap[i][j+1].setColor(map[i][j].getColor());
-                        newmap[i][j+1].setState(true);
-                    }
-                    if(!map[i+1][j-1].isState()){
-                        newmap[i+1][j-1].setColor(map[i][j].getColor());
-                        newmap[i+1][j-1].setState(true);
-                    }
-                    if(!map[i+1][j].isState()){
-                        newmap[i+1][j].setColor(map[i][j].getColor());
-                        newmap[i+1][j].setState(true);
-                    }
-                    if(!map[i+1][j+1].isState()){
-                        newmap[i+1][j+1].setColor(map[i][j].getColor());
-                        newmap[i+1][j+1].setState(true);
-                    }
+                if(neigh==0) moore(i,j);
+                else if(neigh==1) neumann(i,j);
+                else if(neigh==2) hexaLeft(i,j);
+                else if(neigh==3) hexaRight(i,j);
+                else if(neigh==4) {
+                    if(!choice) hexaLeft(i,j);
+                    else if(choice) hexaRight(i,j);
                 }
-            }
+//                else if(neigh==5) {
+//                    if(!choice) pentLeft(i,j);
+//                    else if(choice) pentRight(i,j);
+//                }
+                else if(neigh==5) pentLeft(i,j);
+                }
         }
         updateMap();
     }
+
+    public void setNeigh(int neigh) {
+        this.neigh = neigh;
+
+        if(neigh==5 || neigh==4) {
+            Random rng=new Random();
+            choice=rng.nextBoolean();
+        }
+    }
 }
+
