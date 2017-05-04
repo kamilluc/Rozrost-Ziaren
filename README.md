@@ -1,17 +1,17 @@
 #work in progress
-#sasiedztwa
+#@sasiedztwa
 
-von neumann
+@von neumann
 
-Moore
+@Moore
 
-Heksagonal left
+@Heksagonal left
 
-Hexagonal rigth
+@Hexagonal rigth
 
-Hexagonal losowe
+@Hexagonal losowe
 
-Pentagonal losowe
+@Pentagonal losowe
 
 
 #warunki brzegowe
@@ -20,7 +20,7 @@ periodyczne
 nieprioidyczne
 
 #Losowanie zarodków
-losowe
+@losowe
 
 równomierne
 
