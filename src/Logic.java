@@ -42,21 +42,21 @@ public class Logic {
         }
     }
 
-    public void start(){
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
-                map[i][j]=new Cell();
-                newmap[i][j]=new Cell();
+    public void start() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                map[i][j] = new Cell();
+                newmap[i][j] = new Cell();
             }
         }
-        Random rng=new Random();
-        for(int i=0;i<firstGeneration;i++){
-            int x=rng.nextInt(width-2);
-            int y=rng.nextInt(height-2);
-            map[y+1][x+1].setState(true);
-            newmap[y+1][x+1].setState(true);
-            map[y+1][x+1].setColor(Color.rgb(rng.nextInt(255),rng.nextInt(255),rng.nextInt(255)));
-            newmap[y+1][x+1].setColor(map[y+1][x+1].getColor());
+        Random rng = new Random();
+        for (int i = 0; i < firstGeneration; i++) {
+            int x = rng.nextInt(width - 2);
+            int y = rng.nextInt(height - 2);
+            map[y + 1][x + 1].setState(true);
+            newmap[y + 1][x + 1].setState(true);
+            map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+            newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
         }
 //
 //        for(int i=0;i<height;i++){
@@ -65,6 +65,16 @@ public class Logic {
 //                newmap[i][j].setColor(map[i][j].getColor());
 //            }
 //        }
+    }
+
+    public int emptyFields(){
+        int x=0;
+        for(int i=1;i<height-1;i++) {
+            for (int j = 1; j < width - 1; j++) {
+                if (!map[i][j].isState()) x++;
+            }
+        }
+        return x;
     }
 
     public void nextStep(){

@@ -51,10 +51,15 @@ private static final int pixelSize=4;
 
     private void drawShapes(GraphicsContext gc) {
         //add game logic and dabru foru show rectangle
-        Logic logic=new Logic(appWidth,appHeight,5);
+        Logic logic = new Logic(appWidth, appHeight, 150);
         logic.start();
-        for(int i=0;i<200;i++)
-        logic.nextStep();
+//        for (int i = 0; i < 1; i++)
+//            logic.nextStep();
+        while (logic.emptyFields() > 0){
+           // System.out.println(logic.emptyFields());
+            logic.nextStep();
+        }
+
         for(int i=0;i<appHeight;i++){
             for(int j=0;j<appWidth;j++){
                 gc.setFill(logic.map[i+1][j+1].getColor());
