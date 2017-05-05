@@ -5,10 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -17,12 +14,16 @@ import javafx.stage.Stage;
  */
 public class myApp extends Application {
 
-private static final int appHeight=100*4;
-private static final int appWidth=150*4;
+private static int appHeight=100*4;
+private static int appWidth=150*4;
 private static final int pixelSize=1;
 private static int logicNeighbourhood=0;
 private static boolean logicPeriodic=false;
+private static int numberOfFirstSeeds=150;
 
+private void updateLeyout(){
+
+}
     public static void main(String[] args){
         launch(args);
     }
@@ -94,10 +95,76 @@ private static boolean logicPeriodic=false;
         rb7.setLayoutY(rb6.getLayoutY()+buttonSpace);
         //end periodic
 
+        //seeds
+        Label seedLabel=new Label("Seeds:");
+        seedLabel.setLayoutX(appWidth*pixelSize+5);
+        seedLabel.setLayoutY(rb7.getLayoutY()+2*buttonSpace);
+
+        final ToggleGroup group3 = new ToggleGroup();
+
+        RadioButton rb8=new RadioButton("Random");
+        rb8.setToggleGroup(group3);
+        rb8.setSelected(true);
+        RadioButton rb9=new RadioButton("Even");
+        rb9.setToggleGroup(group3);
+        RadioButton rb10=new RadioButton("Random with Radius");
+        rb10.setToggleGroup(group3);
+        RadioButton rb11=new RadioButton("Clicked");
+        rb11.setToggleGroup(group3);
+
+
+        rb8.setLayoutX(appWidth*pixelSize+5);
+        rb8.setLayoutY(seedLabel.getLayoutY()+buttonSpace);
+        rb9.setLayoutX(appWidth*pixelSize+5);
+        rb9.setLayoutY(rb8.getLayoutY()+buttonSpace);
+        rb10.setLayoutX(appWidth*pixelSize+5);
+        rb10.setLayoutY(rb9.getLayoutY()+buttonSpace);
+        rb11.setLayoutX(appWidth*pixelSize+5);
+        rb11.setLayoutY(rb10.getLayoutY()+buttonSpace);
+        //seeds end
+
+
+        //textfieldy
+        Label tf1Label=new Label("Seeds count:");
+        TextField textField1=new TextField("150");
+        Label tf2Label=new Label("Radius:");
+        TextField textField2=new TextField("4");
+        Label tf3Label=new Label("Height:");
+        TextField textField3=new TextField("600");
+        Label tf4Label=new Label("Width:");
+        TextField textField4=new TextField("500");
+
+        tf1Label.setLayoutX(appWidth*pixelSize+5);
+        tf1Label.setLayoutY(rb11.getLayoutY()+buttonSpace+10);
+        textField1.setLayoutX(appWidth*pixelSize+5);
+        textField1.setLayoutY(tf1Label.getLayoutY()+buttonSpace);
+
+        tf2Label.setLayoutX(appWidth*pixelSize+5);
+        tf2Label.setLayoutY(textField1.getLayoutY()+buttonSpace+10);
+        textField2.setLayoutX(appWidth*pixelSize+5);
+        textField2.setLayoutY(tf2Label.getLayoutY()+buttonSpace);
+
+        tf3Label.setLayoutX(appWidth*pixelSize+5);
+        tf3Label.setLayoutY(textField2.getLayoutY()+buttonSpace+10);
+        textField3.setLayoutX(appWidth*pixelSize+5);
+        textField3.setLayoutY(tf3Label.getLayoutY()+buttonSpace);
+
+        tf4Label.setLayoutX(appWidth*pixelSize+5);
+        tf4Label.setLayoutY(textField3.getLayoutY()+buttonSpace+10);
+        textField4.setLayoutX(appWidth*pixelSize+5);
+        textField4.setLayoutY(tf4Label.getLayoutY()+buttonSpace);
+        //koniec text field
+
+        Button btn2=new Button();
+        btn2.setText("PAUSE");
+        btn2.setLayoutX(appWidth*pixelSize);
+        btn2.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
+
         Button btn=new Button();
         btn.setText("START");
-        btn.setLayoutX(appWidth*pixelSize+20);
-        btn.setLayoutY(appHeight*pixelSize-25);
+        btn.setLayoutX(btn2.getLayoutX()+4*buttonSpace);
+        btn.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -112,6 +179,11 @@ private static boolean logicPeriodic=false;
                 if(rb6.isSelected()) logicPeriodic=false;
                 else if(rb7.isSelected()) logicPeriodic=true;
 
+                appHeight=Integer.parseInt(textField3.getText());
+                appWidth=Integer.parseInt(textField4.getText());
+                canvas.setHeight(appHeight*pixelSize);
+                canvas.setWidth(appWidth*pixelSize);
+                numberOfFirstSeeds=Integer.parseInt(textField1.getText());
                 drawShapes(gc);
             }
         });
@@ -127,6 +199,8 @@ private static boolean logicPeriodic=false;
         root.getChildren().add(rb5);
         root.getChildren().add(neighLabel);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
+        root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
+        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -134,7 +208,7 @@ private static boolean logicPeriodic=false;
     }
 
     private void drawShapes(GraphicsContext gc) {
-        Logic logic = new Logic(appWidth, appHeight, 20);
+        Logic logic = new Logic(appWidth, appHeight, numberOfFirstSeeds);
         logic.setNeigh(logicNeighbourhood);
         logic.setPeriodic(logicPeriodic);
 //        setNeigh: 0 moore

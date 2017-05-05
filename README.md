@@ -29,3 +29,6 @@ losowe z promieniem R
 przez klikniecie
 
 #Ciągłe losowanie zarodków
+
+edit box ile zarodkow i jaki promiec r
+zmiana leyout po zmianie rozmiaru
