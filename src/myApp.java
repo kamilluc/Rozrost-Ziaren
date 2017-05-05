@@ -21,6 +21,7 @@ private static final int appHeight=100*4;
 private static final int appWidth=150*4;
 private static final int pixelSize=1;
 private static int logicNeighbourhood=0;
+private static boolean logicPeriodic=false;
 
     public static void main(String[] args){
         launch(args);
@@ -35,7 +36,7 @@ private static int logicNeighbourhood=0;
 //        drawShapes(gc);
         //test
         //radio
-        Label neighLabel=new Label("Neighbourhood");
+        Label neighLabel=new Label("Neighbourhood:");
         neighLabel.setLayoutX(appWidth*pixelSize+5);
         neighLabel.setLayoutY(0);
         final ToggleGroup group = new ToggleGroup();
@@ -60,7 +61,7 @@ private static int logicNeighbourhood=0;
         rb5.setToggleGroup(group);
         int buttonSpace=20;
         rb0.setLayoutX(appWidth*pixelSize+5);
-        rb0.setLayoutY(15);
+        rb0.setLayoutY(buttonSpace);
         rb1.setLayoutX(appWidth*pixelSize+5);
         rb1.setLayoutY(rb0.getLayoutY()+buttonSpace);
         rb2.setLayoutX(appWidth*pixelSize+5);
@@ -72,6 +73,27 @@ private static int logicNeighbourhood=0;
         rb5.setLayoutX(appWidth*pixelSize+5);
         rb5.setLayoutY(rb4.getLayoutY()+buttonSpace);
         //koniec radio
+
+        //periodic
+        Label periodicLabel=new Label("Borders:");
+        periodicLabel.setLayoutX(appWidth*pixelSize+5);
+        periodicLabel.setLayoutY(rb5.getLayoutY()+2*buttonSpace);
+
+        final ToggleGroup group2 = new ToggleGroup();
+
+        RadioButton rb6=new RadioButton("Non-periodic");
+        rb6.setToggleGroup(group2);
+        rb6.setSelected(true);
+
+        RadioButton rb7=new RadioButton("Periodic");
+        rb7.setToggleGroup(group2);
+
+        rb6.setLayoutX(appWidth*pixelSize+5);
+        rb6.setLayoutY(periodicLabel.getLayoutY()+buttonSpace);
+        rb7.setLayoutX(appWidth*pixelSize+5);
+        rb7.setLayoutY(rb6.getLayoutY()+buttonSpace);
+        //end periodic
+
         Button btn=new Button();
         btn.setText("START");
         btn.setLayoutX(appWidth*pixelSize+20);
@@ -86,6 +108,10 @@ private static int logicNeighbourhood=0;
                 else if(rb3.isSelected()) logicNeighbourhood=3;
                 else if(rb4.isSelected()) logicNeighbourhood=4;
                 else if(rb5.isSelected()) logicNeighbourhood=5;
+
+                if(rb6.isSelected()) logicPeriodic=false;
+                else if(rb7.isSelected()) logicPeriodic=true;
+
                 drawShapes(gc);
             }
         });
@@ -100,6 +126,7 @@ private static int logicNeighbourhood=0;
         root.getChildren().add(rb4);
         root.getChildren().add(rb5);
         root.getChildren().add(neighLabel);
+        root.getChildren().addAll(periodicLabel, rb6, rb7);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -107,14 +134,16 @@ private static int logicNeighbourhood=0;
     }
 
     private void drawShapes(GraphicsContext gc) {
-        Logic logic = new Logic(appWidth, appHeight, 150);
+        Logic logic = new Logic(appWidth, appHeight, 20);
         logic.setNeigh(logicNeighbourhood);
+        logic.setPeriodic(logicPeriodic);
 //        setNeigh: 0 moore
 //                  1 neumann
 //                  2 hexaLeft
 //                  3 hexaRight
 //                  4 hexaRand
 //                  5 pentaRand
+        logic.setPeriodic(logicPeriodic);
         logic.start();
 
         while (logic.emptyFields() > 0){

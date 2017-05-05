@@ -12,6 +12,7 @@ public class Logic {
     private int firstGeneration;
     private int neigh=0;
     boolean choice=false;
+    boolean periodic=false;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -284,7 +285,30 @@ public class Logic {
         }
     }
 
+    private void makePeriodic(){
+        for(int i=0;i<width;i++) {
+            map[0][i] = map[height-2][i];
+            map[height-1][i]=map[1][i];
+        }
+        for(int i=1;i<(height-1);i++){
+            map[i][0]=map[i][width-2];
+            map[i][width-1]=map[i][1];
+        }
+    }
     public void nextStep(){
+
+        if(periodic)
+            makePeriodic();
+
+        for(int i=0;i<width;i++) {
+            map[0][i] = map[height-2][i];
+            map[height-1][i]=map[1][i];
+        }
+        for(int i=1;i<(height-1);i++){
+            map[i][0]=map[i][width-2];
+            map[i][width-1]=map[i][1];
+        }
+
         for(int i=1;i<height-1;i++){
             for(int j=1;j<width-1;j++){
                 if(neigh==0) moore(i,j);
@@ -312,6 +336,14 @@ public class Logic {
             Random rng=new Random();
             choice=rng.nextBoolean();
         }
+    }
+
+    public void setPeriodic(boolean periodic) {
+        this.periodic = periodic;
+    }
+
+    public boolean isPeriodic() {
+        return periodic;
     }
 }
 

@@ -14,10 +14,10 @@
 @Pentagonal losowe
 
 
-#warunki brzegowe
-periodyczne
+#@warunki brzegowe
+@periodyczne
 
-nieprioidyczne
+@nieprioidyczne
 
 #Losowanie zarodków
 @losowe
