@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 public class Cell {
     private Color color;
     private boolean state;
+    private int id; //dodac i state 3 opcje
 
     public Cell(){
         this.color = Color.BLACK;

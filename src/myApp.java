@@ -21,9 +21,7 @@ private static int logicNeighbourhood=0;
 private static boolean logicPeriodic=false;
 private static int numberOfFirstSeeds=150;
 
-private void updateLeyout(){
 
-}
     public static void main(String[] args){
         launch(args);
     }
@@ -184,6 +182,7 @@ private void updateLeyout(){
                 canvas.setHeight(appHeight*pixelSize);
                 canvas.setWidth(appWidth*pixelSize);
                 numberOfFirstSeeds=Integer.parseInt(textField1.getText());
+
                 drawShapes(gc);
             }
         });
