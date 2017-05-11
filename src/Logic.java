@@ -2,6 +2,8 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
+import static java.lang.Math.sqrt;
+
 /**
  * Created by kamil on 03.05.2017.
  */
@@ -13,6 +15,7 @@ public class Logic {
     private int neigh=0;
     boolean choice=false;
     boolean periodic=false;
+    int seedRule=0;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -52,14 +55,45 @@ public class Logic {
                 newmap[i][j] = new Cell();
             }
         }
-        Random rng = new Random();
-        for (int i = 0; i < firstGeneration; i++) {
-            int x = rng.nextInt(width - 2);
-            int y = rng.nextInt(height - 2);
-            map[y + 1][x + 1].setState(true);
-            newmap[y + 1][x + 1].setState(true);
-            map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
-            newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
+
+        if(seedRule==0) {
+            Random rng = new Random();
+            for (int i = 0; i < firstGeneration; i++) {
+                int x = rng.nextInt(width - 2);
+                int y = rng.nextInt(height - 2);
+                map[y + 1][x + 1].setState(true);
+                newmap[y + 1][x + 1].setState(true);
+                map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+                newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
+            }
+        }
+        else if(seedRule==1){
+            Random rng = new Random();
+            double formula=sqrt(width*height/firstGeneration);
+            int iIterations=(int)(height/formula);
+            int jIterations=(int)(width/formula);
+            //int space=(int)(formula/2*1.5);
+            int spaceX=width/(jIterations+1);
+            int spaceY=height/(iIterations+1);
+            for(int i=0;i<iIterations;i++){
+                for(int j=0;j<jIterations;j++){
+                    int x=(int)(spaceX+j*spaceX);
+                    int y=(int)(spaceY+i*spaceY);
+                    map[y][x].setState(true);
+                    newmap[y][x].setState(true);
+                    map[y][x].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+                    newmap[y][x].setColor(map[y][x].getColor());
+                }
+            }
+//            int spaceX=0
+//            int spaceY=0;
+//            for (int i = 0; i < firstGeneration; i++) {
+//                int x = i*spaceX+spaceX;
+//                int y = i*spaceY+spaceY;
+//                map[y + 1][x + 1].setState(true);
+//                newmap[y + 1][x + 1].setState(true);
+//                map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+//                newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
         }
 //
 //        for(int i=0;i<height;i++){
@@ -196,7 +230,7 @@ public class Logic {
         }
     }
 
-    private void pentLeft(int i, int j){
+    private void pentaLeft(int i, int j){
         if(map[i][j].isState()) {
             if(!map[i-1][j-1].isState()){
                 newmap[i-1][j-1].setColor(map[i][j].getColor());
@@ -223,7 +257,7 @@ public class Logic {
                     }
     }
 
-    private void pentRight(int i, int j){
+    private void pentaRight(int i, int j){
         if(map[i][j].isState()) {
 
             if(!map[i-1][j].isState()){
@@ -285,6 +319,43 @@ public class Logic {
         }
     }
 
+    private void pentaBottom(int i, int j){
+        if(map[i][j].isState()) {
+            if(!map[i-1][j-1].isState()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setState(true);
+            }
+            if(!map[i-1][j].isState()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setState(true);
+            }
+            if(!map[i-1][j+1].isState()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setState(true);
+            }
+            if(!map[i][j-1].isState()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setState(true);
+            }
+            if(!map[i][j+1].isState()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setState(true);
+            }
+//            if(!map[i+1][j-1].isState()){
+//                newmap[i+1][j-1].setColor(map[i][j].getColor());
+//                newmap[i+1][j-1].setState(true);
+//            }
+//            if(!map[i+1][j].isState()){
+//                newmap[i+1][j].setColor(map[i][j].getColor());
+//                newmap[i+1][j].setState(true);
+//            }
+//            if(!map[i+1][j+1].isState()){
+//                newmap[i+1][j+1].setColor(map[i][j].getColor());
+//                newmap[i+1][j+1].setState(true);
+//            }
+        }
+    }
+
     private void makePeriodic(){
         for(int i=0;i<width;i++) {
             map[0][i] = map[height-2][i];
@@ -300,14 +371,14 @@ public class Logic {
         if(periodic)
             makePeriodic();
 
-        for(int i=0;i<width;i++) {
-            map[0][i] = map[height-2][i];
-            map[height-1][i]=map[1][i];
-        }
-        for(int i=1;i<(height-1);i++){
-            map[i][0]=map[i][width-2];
-            map[i][width-1]=map[i][1];
-        }
+//        for(int i=0;i<width;i++) {
+//            map[0][i] = map[height-2][i];
+//            map[height-1][i]=map[1][i];
+//        }
+//        for(int i=1;i<(height-1);i++){
+//            map[i][0]=map[i][width-2];
+//            map[i][width-1]=map[i][1];
+//        }
 
         for(int i=1;i<height-1;i++){
             for(int j=1;j<width-1;j++){
@@ -316,17 +387,39 @@ public class Logic {
                 else if(neigh==2) hexaLeft(i,j);
                 else if(neigh==3) hexaRight(i,j);
                 else if(neigh==4) {
-                    if(!choice) hexaLeft(i,j);
-                    else if(choice) hexaRight(i,j);
+                            boolean tmp=randHex();
+                            if(tmp) hexaLeft(i,j);
+                            else hexaRight(i,j);
+//                    if(!choice) hexaLeft(i,j);
+//                    else if(choice) hexaRight(i,j);
                 }
 //                else if(neigh==5) {
 //                    if(!choice) pentLeft(i,j);
 //                    else if(choice) pentRight(i,j);
 //                }
-                else if(neigh==5) pentLeft(i,j);
+                else if(neigh==5) {
+                    //pentLeft(i,j);
+                    int tmp=randPenta();
+                    if(tmp==0) pentaBottom(i,j);
+                    else if(tmp==1) pentaTop(i,j);
+                    else if(tmp==2) pentaLeft(i,j);
+                    else if(tmp==3) pentaRight(i,j);
+                }
                 }
         }
         updateMap();
+    }
+
+    private boolean randHex(){
+        Random rng=new Random();
+        boolean a=rng.nextBoolean();
+        return a;
+    }
+
+    private int randPenta(){
+        Random rng=new Random();
+        int a=rng.nextInt(3-0);
+        return a;
     }
 
     public void setNeigh(int neigh) {
@@ -344,6 +437,10 @@ public class Logic {
 
     public boolean isPeriodic() {
         return periodic;
+    }
+
+    public void setSeedRule(int seedRule){
+        this.seedRule = seedRule;
     }
 }
 

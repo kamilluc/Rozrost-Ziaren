@@ -20,7 +20,7 @@ private static final int pixelSize=1;
 private static int logicNeighbourhood=0;
 private static boolean logicPeriodic=false;
 private static int numberOfFirstSeeds=150;
-
+private static int seedRule=0;
 
     public static void main(String[] args){
         launch(args);
@@ -130,7 +130,7 @@ private static int numberOfFirstSeeds=150;
         Label tf3Label=new Label("Height:");
         TextField textField3=new TextField("600");
         Label tf4Label=new Label("Width:");
-        TextField textField4=new TextField("500");
+        TextField textField4=new TextField("600");
 
         tf1Label.setLayoutX(appWidth*pixelSize+5);
         tf1Label.setLayoutY(rb11.getLayoutY()+buttonSpace+10);
@@ -183,6 +183,11 @@ private static int numberOfFirstSeeds=150;
                 canvas.setWidth(appWidth*pixelSize);
                 numberOfFirstSeeds=Integer.parseInt(textField1.getText());
 
+                if(rb8.isSelected()) seedRule=0;
+                else if(rb9.isSelected()) seedRule=1;
+                else if(rb10.isSelected()) seedRule=2;
+                else if(rb11.isSelected()) seedRule=3;
+
                 drawShapes(gc);
             }
         });
@@ -216,7 +221,8 @@ private static int numberOfFirstSeeds=150;
 //                  3 hexaRight
 //                  4 hexaRand
 //                  5 pentaRand
-        logic.setPeriodic(logicPeriodic);
+        //logic.setPeriodic(logicPeriodic);
+        logic.setSeedRule(seedRule);
         logic.start();
 
         while (logic.emptyFields() > 0){
