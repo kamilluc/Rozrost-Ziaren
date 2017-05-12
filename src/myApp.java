@@ -1,3 +1,5 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Created by kamil on 04.05.2017.
@@ -224,17 +227,53 @@ private static int seedRule=0;
         //logic.setPeriodic(logicPeriodic);
         logic.setSeedRule(seedRule);
         logic.start();
+//
+//        while (logic.emptyFields() > 0){
+//            //System.out.println(logic.emptyFields());
+//            logic.nextStep();
+//        }
+//
+//        for(int i=0;i<appHeight;i++){
+//            for(int j=0;j<appWidth;j++){
+//                gc.setFill(logic.map[i+1][j+1].getColor());
+//                gc.fillRect(j*pixelSize,i*pixelSize,pixelSize,pixelSize);
+//            }
+//        }
 
-        while (logic.emptyFields() > 0){
-            //System.out.println(logic.emptyFields());
-            logic.nextStep();
-        }
+//new
+        Timeline gameLoop = new Timeline();
+        gameLoop.setCycleCount( Timeline.INDEFINITE );
 
-        for(int i=0;i<appHeight;i++){
-            for(int j=0;j<appWidth;j++){
-                gc.setFill(logic.map[i+1][j+1].getColor());
-                gc.fillRect(j*pixelSize,i*pixelSize,pixelSize,pixelSize);
-            }
-        }
+        final long timeStart = System.currentTimeMillis();
+
+        KeyFrame kf = new KeyFrame(
+                Duration.seconds(0.5),                // 60 FPS
+                new EventHandler<ActionEvent>()
+                {
+                    public void handle(ActionEvent ae) {
+                        //if (logic.emptyFields() > 0) {
+                            for (int i = 0; i < appHeight; i++) {
+                                for (int j = 0; j < appWidth; j++) {
+                                    gc.setFill(logic.map[i + 1][j + 1].getColor());
+                                    gc.fillRect(j * pixelSize, i * pixelSize, pixelSize, pixelSize);
+                                }
+                            }
+
+                            logic.nextStep();
+
+
+                            //new
+
+                        //end
+
+                        //}
+                    }
+                });
+
+        gameLoop.getKeyFrames().add( kf );
+        gameLoop.play();
+
+        //koniec new
+
     }
 }

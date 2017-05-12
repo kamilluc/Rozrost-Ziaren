@@ -14,7 +14,7 @@ public class Logic {
     private int firstGeneration;
     private int neigh=0;
     boolean choice=false;
-    boolean periodic=false;
+    boolean periodic=true;
     int seedRule=0;
 
     public Logic(int width, int height, int firstGeneration) {
@@ -358,12 +358,18 @@ public class Logic {
 
     private void makePeriodic(){
         for(int i=0;i<width;i++) {
+//            map[0][i] = map[height-2][i];
+  //          map[height-1][i]=map[1][i];
             map[0][i] = map[height-2][i];
             map[height-1][i]=map[1][i];
+
         }
         for(int i=1;i<(height-1);i++){
+//            map[i][0]=map[i][width-2];
+  //          map[i][width-1]=map[i][1];
             map[i][0]=map[i][width-2];
             map[i][width-1]=map[i][1];
+
         }
     }
     public void nextStep(){
