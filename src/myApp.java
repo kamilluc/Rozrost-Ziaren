@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -191,7 +192,7 @@ private static int seedRule=0;
                 else if(rb10.isSelected()) seedRule=2;
                 else if(rb11.isSelected()) seedRule=3;
 
-                drawShapes(gc);
+                drawShapes(gc,root);
             }
         });
 
@@ -214,7 +215,7 @@ private static int seedRule=0;
 
     }
 
-    private void drawShapes(GraphicsContext gc) {
+    private void drawShapes(GraphicsContext gc, Group root) {
         Logic logic = new Logic(appWidth, appHeight, numberOfFirstSeeds);
         logic.setNeigh(logicNeighbourhood);
         logic.setPeriodic(logicPeriodic);
@@ -241,6 +242,32 @@ private static int seedRule=0;
 //        }
 
 //new
+
+
+        //klikanie to ziarno start
+        root.setOnMouseClicked(
+                new EventHandler<MouseEvent>()
+                {
+                    public void handle(MouseEvent e)
+                    {
+                        int x=(int)(e.getX());
+                        int y=(int)(e.getY());
+                        //System.out.println(x+" "+y);
+                        logic.newSeed(x,y);
+
+//                        if ( targetData.containsPoint( e.getX(), e.getY() ) )
+//                        {
+//                            double x = 50 + 400 * Math.random();
+//                            double y = 50 + 400 * Math.random();
+//                            targetData.setCenter(x,y);
+//                            points.value++;
+//                        }
+//                        else
+//                            points.value = 0;
+                    }
+                });
+        //clicked ziarno koniec
+
         Timeline gameLoop = new Timeline();
         gameLoop.setCycleCount( Timeline.INDEFINITE );
 

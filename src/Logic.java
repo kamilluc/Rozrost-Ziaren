@@ -47,7 +47,14 @@ public class Logic {
             }
         }
     }
+    public void newSeed(int x,int y){
+        map[y + 1][x + 1].setState(true);
+     //  newmap[y + 1][x + 1].setState(true);
+        Random rng=new Random();
+        map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+    //    newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
 
+    }
     public void start() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -356,20 +363,38 @@ public class Logic {
         }
     }
 
-    private void makePeriodic(){
-        for(int i=0;i<width;i++) {
+//    private void makePeriodic(){
+//        for(int i=0;i<width;i++) {
+////            map[0][i] = map[height-2][i];
+//  //          map[height-1][i]=map[1][i];
 //            map[0][i] = map[height-2][i];
-  //          map[height-1][i]=map[1][i];
+//            map[height-1][i]=map[1][i];
+//
+//        }
+//        for(int i=1;i<(height-1);i++){
+////            map[i][0]=map[i][width-2];
+//  //          map[i][width-1]=map[i][1];
+//            map[i][0]=map[i][width-2];
+//            map[i][width-1]=map[i][1];
+//
+//        }
+//    }
+
+    private void makePeriodic(){
+        for(int i=1;i<(width-1);i++) {
+//            map[0][i] = map[height-2][i];
+            //          map[height-1][i]=map[1][i];
             map[0][i] = map[height-2][i];
             map[height-1][i]=map[1][i];
 
         }
         for(int i=1;i<(height-1);i++){
 //            map[i][0]=map[i][width-2];
-  //          map[i][width-1]=map[i][1];
+            //          map[i][width-1]=map[i][1];
             map[i][0]=map[i][width-2];
             map[i][width-1]=map[i][1];
-
+// z prawej na lewo dziala
+            // z dolu na gore tez
         }
     }
     public void nextStep(){
