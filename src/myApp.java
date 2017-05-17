@@ -192,7 +192,7 @@ private static int seedRule=0;
                 else if(rb10.isSelected()) seedRule=2;
                 else if(rb11.isSelected()) seedRule=3;
 
-                drawShapes(gc,root);
+                drawShapes(gc,root,rb0,rb1);
             }
         });
 
@@ -215,7 +215,7 @@ private static int seedRule=0;
 
     }
 
-    private void drawShapes(GraphicsContext gc, Group root) {
+    private void drawShapes(GraphicsContext gc, Group root, RadioButton rb0,RadioButton rb1) {
         Logic logic = new Logic(appWidth, appHeight, numberOfFirstSeeds);
         logic.setNeigh(logicNeighbourhood);
         logic.setPeriodic(logicPeriodic);
@@ -285,7 +285,14 @@ private static int seedRule=0;
                                     gc.fillRect(j * pixelSize, i * pixelSize, pixelSize, pixelSize);
                                 }
                             }
-
+                       //logic.setSeedRule(seedRule);
+                        if(rb0.isSelected()) logicNeighbourhood=0;
+                        else if(rb1.isSelected()) logicNeighbourhood=1;
+//                        else if(rb2.isSelected()) logicNeighbourhood=2;
+//                        else if(rb3.isSelected()) logicNeighbourhood=3;
+//                        else if(rb4.isSelected()) logicNeighbourhood=4;
+//                        else if(rb5.isSelected()) logicNeighbourhood=5;
+                            logic.setNeigh(logicNeighbourhood);
                             logic.nextStep();
 
 
