@@ -25,7 +25,7 @@ private static int logicNeighbourhood=0;
 private static boolean logicPeriodic=false;
 private static int numberOfFirstSeeds=150;
 private static int seedRule=0;
-
+private static boolean gameState=true;
     public static void main(String[] args){
         launch(args);
     }
@@ -157,14 +157,20 @@ private static int seedRule=0;
         textField4.setLayoutY(tf4Label.getLayoutY()+buttonSpace);
         //koniec text field
 
+        Button btn3=new Button();
+        btn3.setText("RESET");
+        btn3.setLayoutX(appWidth*pixelSize+5);
+        btn3.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
+
+
         Button btn2=new Button();
         btn2.setText("PAUSE");
-        btn2.setLayoutX(appWidth*pixelSize);
+        btn2.setLayoutX(btn3.getLayoutX()+3*buttonSpace-5);
         btn2.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
 
         Button btn=new Button();
         btn.setText("START");
-        btn.setLayoutX(btn2.getLayoutX()+4*buttonSpace);
+        btn.setLayoutX(btn2.getLayoutX()+3*buttonSpace-5);
         btn.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -192,7 +198,7 @@ private static int seedRule=0;
                 else if(rb10.isSelected()) seedRule=2;
                 else if(rb11.isSelected()) seedRule=3;
 
-                drawShapes(gc,root,rb0,rb1);
+                drawShapes(gc,root,rb0,rb1,btn2,btn3);
             }
         });
 
@@ -208,14 +214,14 @@ private static int seedRule=0;
         root.getChildren().add(neighLabel);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
         root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
-        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4);
+        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
 
     }
 
-    private void drawShapes(GraphicsContext gc, Group root, RadioButton rb0,RadioButton rb1) {
+    private void drawShapes(GraphicsContext gc, Group root, RadioButton rb0,RadioButton rb1, Button btn2, Button btn3) {
         Logic logic = new Logic(appWidth, appHeight, numberOfFirstSeeds);
         logic.setNeigh(logicNeighbourhood);
         logic.setPeriodic(logicPeriodic);
@@ -274,7 +280,7 @@ private static int seedRule=0;
         final long timeStart = System.currentTimeMillis();
 
         KeyFrame kf = new KeyFrame(
-                Duration.seconds(0.5),                // 60 FPS
+                Duration.seconds(0.15),                // 60 FPS
                 new EventHandler<ActionEvent>()
                 {
                     public void handle(ActionEvent ae) {
@@ -304,7 +310,35 @@ private static int seedRule=0;
                     }
                 });
 
-        gameLoop.getKeyFrames().add( kf );
+        btn2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //System.out.println("Hello World!");
+
+                gameState = !gameState;
+                if (!gameState) gameLoop.pause();
+                else
+                    gameLoop.play();
+
+                //logic.start();
+            }});
+
+
+        btn3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //System.out.println("Hello World!");
+
+//                gameState = !gameState;
+//                if (!gameState) gameLoop.pause();
+//                else
+//                    gameLoop.play();
+
+                logic.start();
+                //logic.setPeriodic(logicPeriodic);
+            }});
+
+                gameLoop.getKeyFrames().add( kf );
         gameLoop.play();
 
         //koniec new

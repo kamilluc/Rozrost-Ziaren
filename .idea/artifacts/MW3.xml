@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="MW3">
+    <output-path>$PROJECT_DIR$/out/artifacts/MW3</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="myApp" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="exe" />
+        <option name="title" value="xxxs" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="MW3.jar">
+        <element id="module-output" name="MW3" />
+      </element>
+    </root>
+  </artifact>
+</component>
