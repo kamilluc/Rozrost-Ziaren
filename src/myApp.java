@@ -25,6 +25,9 @@ private static int logicNeighbourhood=0;
 private static boolean logicPeriodic=false;
 private static int numberOfFirstSeeds=150;
 private static int seedRule=0;
+    private static int newSeeds=0;
+    private static boolean startValue=false;
+    private static int radiusValue=1;
 private static boolean gameState=true;
     public static void main(String[] args){
         launch(args);
@@ -132,9 +135,11 @@ private static boolean gameState=true;
         Label tf2Label=new Label("Radius:");
         TextField textField2=new TextField("4");
         Label tf3Label=new Label("Height:");
-        TextField textField3=new TextField("600");
+        TextField textField3=new TextField("690");
         Label tf4Label=new Label("Width:");
         TextField textField4=new TextField("600");
+        Label tf5Label=new Label("Add new seeds:");
+        TextField textField5=new TextField("0");
 
         tf1Label.setLayoutX(appWidth*pixelSize+5);
         tf1Label.setLayoutY(rb11.getLayoutY()+buttonSpace+10);
@@ -155,7 +160,13 @@ private static boolean gameState=true;
         tf4Label.setLayoutY(textField3.getLayoutY()+buttonSpace+10);
         textField4.setLayoutX(appWidth*pixelSize+5);
         textField4.setLayoutY(tf4Label.getLayoutY()+buttonSpace);
+
+
         //koniec text field
+        Button btn4=new Button();
+        btn4.setText("START");
+        btn4.setLayoutX(appWidth*pixelSize+5);
+        btn4.setLayoutY(textField4.getLayoutY()+5*buttonSpace);
 
         Button btn3=new Button();
         btn3.setText("RESET");
@@ -169,9 +180,14 @@ private static boolean gameState=true;
         btn2.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
 
         Button btn=new Button();
-        btn.setText("START");
+        btn.setText("SET");
         btn.setLayoutX(btn2.getLayoutX()+3*buttonSpace-5);
         btn.setLayoutY(textField4.getLayoutY()+2*buttonSpace);
+
+        tf5Label.setLayoutX(appWidth*pixelSize+5);
+        tf5Label.setLayoutY(btn4.getLayoutY()+buttonSpace+10);
+        textField5.setLayoutX(appWidth*pixelSize+5);
+        textField5.setLayoutY(tf5Label.getLayoutY()+buttonSpace);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -197,8 +213,17 @@ private static boolean gameState=true;
                 else if(rb9.isSelected()) seedRule=1;
                 else if(rb10.isSelected()) seedRule=2;
                 else if(rb11.isSelected()) seedRule=3;
+        radiusValue=Integer.parseInt(textField2.getText());
+                newSeeds=Integer.parseInt(textField5.getText());
+               // drawShapes(gc,root,rb0,rb1,btn2,btn3);
+            }
+        });
 
-                drawShapes(gc,root,rb0,rb1,btn2,btn3);
+        btn4.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                 drawShapes(gc,root,rb0,rb1,btn2,btn3);
             }
         });
 
@@ -214,7 +239,7 @@ private static boolean gameState=true;
         root.getChildren().add(neighLabel);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
         root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
-        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3);
+        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -233,6 +258,8 @@ private static boolean gameState=true;
 //                  5 pentaRand
         //logic.setPeriodic(logicPeriodic);
         logic.setSeedRule(seedRule);
+        logic.setRadius(radiusValue);
+        logic.addNewSeeds(newSeeds);
         logic.start();
 //
 //        while (logic.emptyFields() > 0){
@@ -319,7 +346,7 @@ private static boolean gameState=true;
                 if (!gameState) gameLoop.pause();
                 else
                     gameLoop.play();
-
+                logic.addNewSeeds(newSeeds);
                 //logic.start();
             }});
 
@@ -333,6 +360,14 @@ private static boolean gameState=true;
 //                if (!gameState) gameLoop.pause();
 //                else
 //                    gameLoop.play();
+
+
+
+
+
+
+
+
 
                 logic.start();
                 //logic.setPeriodic(logicPeriodic);

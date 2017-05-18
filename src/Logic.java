@@ -16,6 +16,7 @@ public class Logic {
     boolean choice=false;
     boolean periodic=true;
     int seedRule=0;
+    int radius=1;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -49,9 +50,11 @@ public class Logic {
     }
     public void newSeed(int x,int y){
         map[y + 1][x + 1].setState(true);
+        newmap[y + 1][x + 1].setState(true);
      //  newmap[y + 1][x + 1].setState(true);
         Random rng=new Random();
         map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+        newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
     //    newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
 
     }
@@ -66,8 +69,10 @@ public class Logic {
         if(seedRule==0) {
             Random rng = new Random();
             for (int i = 0; i < firstGeneration; i++) {
-                int x = rng.nextInt(width - 2);
-                int y = rng.nextInt(height - 2);
+//                int x = rng.nextInt(width - 2);
+//                int y = rng.nextInt(height - 2);
+                int x=rng.nextInt((width-1)-1);
+                int y=rng.nextInt((height-1)-1);
                 map[y + 1][x + 1].setState(true);
                 newmap[y + 1][x + 1].setState(true);
                 map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
@@ -101,6 +106,31 @@ public class Logic {
 //                newmap[y + 1][x + 1].setState(true);
 //                map[y + 1][x + 1].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
 //                newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
+        }
+        else if(seedRule==2) {
+            Random rng = new Random();
+            int x,y;
+            for(int i=0;i<firstGeneration;i++){
+                x=rng.nextInt((width-1)-1);
+                y=rng.nextInt((height-1)-1);
+                if(!map[y][x].isRadiusMark()){
+                    map[y][x].setState(true);
+                    newmap[y][x].setState(true);
+                    map[y][x].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+                    newmap[y][x].setColor(map[y][x].getColor());
+                    for(int j=-radius;j<radius;j++){
+                        for(int k=-radius;k<radius;k++){
+                            if((y+j)<1 || (y+j)>(height-1) || (x+k)<1 || (x+k)>(width-1))
+                                continue;
+                            map[y+j][x+k].setRadiusMark(true);
+                            newmap[y+j][x+k].setRadiusMark(true);
+                        }
+                    }
+
+                }
+                else
+                    continue;
+            }
         }
 //
 //        for(int i=0;i<height;i++){
@@ -384,19 +414,20 @@ public class Logic {
         for(int i=1;i<(width-1);i++) {
 //            map[0][i] = map[height-2][i];
             //          map[height-1][i]=map[1][i];
-            map[0][i] = map[height-2][i];
-            map[height-1][i]=map[1][i];
+            newmap[0][i] = newmap[height-2][i];
+            newmap[height-1][i]=newmap[1][i];
 
         }
         for(int i=1;i<(height-1);i++){
 //            map[i][0]=map[i][width-2];
             //          map[i][width-1]=map[i][1];
-            map[i][0]=map[i][width-2];
-            map[i][width-1]=map[i][1];
+            newmap[i][0]=newmap[i][width-2];
+            newmap[i][width-1]=newmap[i][1];
 // z prawej na lewo dziala
             // z dolu na gore tez
         }
     }
+
     public void nextStep(){
 
         if(periodic)
@@ -441,6 +472,23 @@ public class Logic {
         updateMap();
     }
 
+    public void addNewSeeds(int newSeeds){
+        Random rng = new Random();
+        int x,y;
+        for(int i=0;i<newSeeds;i++){
+            x=rng.nextInt((width-1)-1);
+            y=rng.nextInt((height-1)-1);
+
+                map[y][x].setState(true);
+                newmap[y][x].setState(true);
+                map[y][x].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+                newmap[y][x].setColor(map[y][x].getColor());
+
+
+
+        }
+    }
+
     private boolean randHex(){
         Random rng=new Random();
         boolean a=rng.nextBoolean();
@@ -472,6 +520,14 @@ public class Logic {
 
     public void setSeedRule(int seedRule){
         this.seedRule = seedRule;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 }
 
