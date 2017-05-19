@@ -8,11 +8,15 @@ public class Cell {
     private boolean state;
     private int id; //dodac i state 3 opcje
     private boolean radiusMark;
+    private boolean recrystalized;
+    private long ro;
 
     public Cell(){
         this.color = Color.BLACK;
         this.state = false;
         this.radiusMark=false;
+        this.recrystalized=false;
+this.ro=1;
     }
 
     public Color getColor() {
@@ -45,5 +49,21 @@ public class Cell {
 
     public void setRadiusMark(boolean radiusMark) {
         this.radiusMark = radiusMark;
+    }
+
+    public boolean isRecrystalized() {
+        return recrystalized;
+    }
+
+    public void setRecrystalized(boolean recrystalized) {
+        this.recrystalized = recrystalized;
+    }
+
+    public long getRo() {
+        return ro;
+    }
+
+    public void setRo(long ro) {
+        this.ro = ro;
     }
 }

@@ -29,13 +29,14 @@ private static int seedRule=0;
     private static boolean startValue=false;
     private static int radiusValue=1;
 private static boolean gameState=true;
+    private static boolean recrystalization=false;
     public static void main(String[] args){
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("myApp");
+        primaryStage.setTitle("NRZnR");
         Group root = new Group();
         Canvas canvas = new Canvas(appWidth*pixelSize, appHeight*pixelSize);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -168,6 +169,12 @@ private static boolean gameState=true;
         btn4.setLayoutX(appWidth*pixelSize+5);
         btn4.setLayoutY(textField4.getLayoutY()+5*buttonSpace);
 
+        CheckBox checkBox=new CheckBox("Recrystallization");
+        checkBox.setLayoutX(btn4.getLayoutX());
+        checkBox.setLayoutY(btn4.getLayoutY()-buttonSpace-5);
+
+
+
         Button btn3=new Button();
         btn3.setText("RESET");
         btn3.setLayoutX(appWidth*pixelSize+5);
@@ -216,6 +223,11 @@ private static boolean gameState=true;
         radiusValue=Integer.parseInt(textField2.getText());
                 newSeeds=Integer.parseInt(textField5.getText());
                // drawShapes(gc,root,rb0,rb1,btn2,btn3);
+
+                if(checkBox.isSelected())
+                    recrystalization=true;
+                            else
+                                recrystalization=false;
             }
         });
 
@@ -239,7 +251,7 @@ private static boolean gameState=true;
         root.getChildren().add(neighLabel);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
         root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
-        root.getChildren().addAll(tf1Label,tf2Label,tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label);
+        root.getChildren().addAll(tf1Label,tf2Label, checkBox, tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -260,6 +272,7 @@ private static boolean gameState=true;
         logic.setSeedRule(seedRule);
         logic.setRadius(radiusValue);
         logic.addNewSeeds(newSeeds);
+        logic.setRecrystalization(recrystalization);
         logic.start();
 //
 //        while (logic.emptyFields() > 0){

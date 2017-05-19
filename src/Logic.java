@@ -17,6 +17,7 @@ public class Logic {
     boolean periodic=true;
     int seedRule=0;
     int radius=1;
+    boolean recrystalization;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -48,6 +49,7 @@ public class Logic {
             }
         }
     }
+
     public void newSeed(int x,int y){
         map[y + 1][x + 1].setState(true);
         newmap[y + 1][x + 1].setState(true);
@@ -58,6 +60,7 @@ public class Logic {
     //    newmap[y + 1][x + 1].setColor(map[y + 1][x + 1].getColor());
 
     }
+
     public void start() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -143,8 +146,8 @@ public class Logic {
 
     public int emptyFields(){
         int x=0;
-        for(int i=1;i<height-1;i++) {
-            for (int j = 1; j < width - 1; j++) {
+        for(int i=1;i<(height-1);i++) {
+            for (int j = 1; j < (width - 1); j++) {
                 if (!map[i][j].isState()) x++;
             }
         }
@@ -319,6 +322,7 @@ public class Logic {
             }
         }
     }
+
     private void pentaTop(int i, int j){
         if(map[i][j].isState()) {
 //            if(!map[i-1][j-1].isState()){
@@ -393,23 +397,6 @@ public class Logic {
         }
     }
 
-//    private void makePeriodic(){
-//        for(int i=0;i<width;i++) {
-////            map[0][i] = map[height-2][i];
-//  //          map[height-1][i]=map[1][i];
-//            map[0][i] = map[height-2][i];
-//            map[height-1][i]=map[1][i];
-//
-//        }
-//        for(int i=1;i<(height-1);i++){
-////            map[i][0]=map[i][width-2];
-//  //          map[i][width-1]=map[i][1];
-//            map[i][0]=map[i][width-2];
-//            map[i][width-1]=map[i][1];
-//
-//        }
-//    }
-
     private void makePeriodic(){
         for(int i=1;i<(width-1);i++) {
 //            map[0][i] = map[height-2][i];
@@ -433,6 +420,7 @@ public class Logic {
         if(periodic)
             makePeriodic();
 
+
 //        for(int i=0;i<width;i++) {
 //            map[0][i] = map[height-2][i];
 //            map[height-1][i]=map[1][i];
@@ -441,6 +429,10 @@ public class Logic {
 //            map[i][0]=map[i][width-2];
 //            map[i][width-1]=map[i][1];
 //        }
+        if((recrystalization==true)&&(emptyFields()==0))
+                recrystalization();
+
+        else{
 
         for(int i=1;i<height-1;i++){
             for(int j=1;j<width-1;j++){
@@ -468,7 +460,7 @@ public class Logic {
                     else if(tmp==3) pentaRight(i,j);
                 }
                 }
-        }
+        }}
         updateMap();
     }
 
@@ -522,12 +514,30 @@ public class Logic {
         this.seedRule = seedRule;
     }
 
+    private void recrystalization(){
+        int x=width-2;
+        int y=height-2;
+        double A=86710969050178.5;
+        double B=9.41268203527779;
+
+        //System.out.println("lol");
+
+    }
+
     public int getRadius() {
         return radius;
     }
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public boolean isRecrystalization() {
+        return recrystalization;
+    }
+
+    public void setRecrystalization(boolean recrystalization) {
+        this.recrystalization = recrystalization;
     }
 }
 
