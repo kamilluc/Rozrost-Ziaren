@@ -9,7 +9,7 @@ public class Cell {
     private int id; //dodac i state 3 opcje
     private boolean radiusMark;
     private boolean recrystalized;
-    private long ro;
+    private double ro;
 
     public Cell(){
         this.color = Color.BLACK;
@@ -59,11 +59,11 @@ this.ro=1;
         this.recrystalized = recrystalized;
     }
 
-    public long getRo() {
+    public double getRo() {
         return ro;
     }
 
-    public void setRo(long ro) {
+    public void setRo(double ro) {
         this.ro = ro;
     }
 }

@@ -1,7 +1,9 @@
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.Math.exp;
 import static java.lang.Math.sqrt;
 
 /**
@@ -18,6 +20,8 @@ public class Logic {
     int seedRule=0;
     int radius=1;
     boolean recrystalization;
+    static int recrystalCounter=0;
+    static double roAll=0;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -46,6 +50,8 @@ public class Logic {
 
                 map[i][j].setState(newmap[i][j].isState());
                 map[i][j].setColor(newmap[i][j].getColor());
+                map[i][j].setRecrystalized(newmap[i][j].isRecrystalized());
+                map[i][j].setRo(newmap[i][j].getRo());
             }
         }
     }
@@ -189,6 +195,54 @@ public class Logic {
                 newmap[i+1][j+1].setState(true);
             }
     }
+    }
+
+    private void moore2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+            if(!map[i-1][j-1].isRecrystalized()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j+1].isRecrystalized()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i+1][j-1].isRecrystalized()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j+1].isRecrystalized()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+        }
     }
 
     private void neumann(int i, int j){
@@ -429,9 +483,37 @@ public class Logic {
 //            map[i][0]=map[i][width-2];
 //            map[i][width-1]=map[i][1];
 //        }
-        if((recrystalization==true)&&(emptyFields()==0))
-                recrystalization();
-
+        if((recrystalization==true)&&(emptyFields()==0)) {
+            recrystalization();
+            for (int i = 1; i < height - 1; i++) {
+                for (int j = 1; j < width - 1; j++) {
+                   // if (neigh == 0) moore2(i, j);
+                    moore2(i, j);
+//                    else if (neigh == 1) neumann(i, j);
+//                    else if (neigh == 2) hexaLeft(i, j);
+//                    else if (neigh == 3) hexaRight(i, j);
+//                    else if (neigh == 4) {
+//                        boolean tmp = randHex();
+//                        if (tmp) hexaLeft(i, j);
+//                        else hexaRight(i, j);
+////                    if(!choice) hexaLeft(i,j);
+////                    else if(choice) hexaRight(i,j);
+//                    }
+////                else if(neigh==5) {
+////                    if(!choice) pentLeft(i,j);
+////                    else if(choice) pentRight(i,j);
+////                }
+//                    else if (neigh == 5) {
+//                        //pentLeft(i,j);
+//                        int tmp = randPenta();
+//                        if (tmp == 0) pentaBottom(i, j);
+//                        else if (tmp == 1) pentaTop(i, j);
+//                        else if (tmp == 2) pentaLeft(i, j);
+//                        else if (tmp == 3) pentaRight(i, j);
+//                    }
+                }
+            }
+        }
         else{
 
         for(int i=1;i<height-1;i++){
@@ -514,14 +596,117 @@ public class Logic {
         this.seedRule = seedRule;
     }
 
+    private boolean mooreRecrystal(int i, int j){
+        int tmp=0;
+        boolean tmp2=false;
+        if(map[i-1][j-1].getColor().equals(map[i][j].getColor())) tmp++;
+        if(map[i-1][j].getColor().equals(map[i][j].getColor())) tmp++;
+        if(map[i-1][j+1].getColor().equals(map[i][j].getColor())) tmp++;
+
+        if(map[i][j-1].getColor().equals(map[i][j].getColor())) tmp++;
+        if(map[i][j+1].getColor().equals(map[i][j].getColor())) tmp++;
+
+        if(map[i+1][j-1].getColor().equals(map[i][j].getColor())) tmp++;
+        if(map[i+1][j].getColor().equals(map[i][j].getColor())) tmp++;
+        if(map[i+1][j+1].getColor().equals(map[i][j].getColor())) tmp++;
+        if(tmp!=8)
+            tmp2=true;
+    return tmp2;
+    }
+
     private void recrystalization(){
+        //stale
         int x=width-2;
         int y=height-2;
         double A=86710969050178.5;
         double B=9.41268203527779;
+        final double k=1000;
+        //liicznie ro dla wszystkich krokow czasowych
+        ArrayList<Double> roData=new ArrayList<>();
+        for(int i=0;i<200;i++){
+            Double tmp=A/B+(1-A/B)*exp(-B*i*0.001);
+            roData.add(tmp);
+        }
 
-        //System.out.println("lol");
+        //wartosc krytyczna
+        ///wywalic to 100
+        Double critRo=roData.get(65)/(x*y);
 
+        //indexy komorek na granicy ziaren i wewnatrz
+        ArrayList<CellIndex> outsideSeeds=new ArrayList<>();
+        ArrayList<CellIndex> insideSeeds=new ArrayList<>();
+         for(int i=1;i<(height-1);i++){
+             for(int j=1;j<(width-1);j++){
+               CellIndex cellIndex=new CellIndex(i,j);
+               if(mooreRecrystal(i,j)) insideSeeds.add(cellIndex);
+               else
+                   outsideSeeds.add(cellIndex);
+             }
+         }
+        recrystalCounter++;
+         //delta ro
+        roAll=0;
+        for(int i=1;i<(height-1);i++){
+            for(int j=1;j<(width-1);j++) {
+                    roAll+=map[i][j].getRo();
+            }
+            }
+        double delta=roData.get(recrystalCounter)-roAll;
+
+        //update na kolejny steep
+
+        //roAll+=delta;
+
+        //ro na komorke
+        double roCell=delta/(x*y);
+
+        //przydzial
+        for(CellIndex w:outsideSeeds) {
+            newmap[w.getX()][w.getY()].setRo(newmap[w.getX()][w.getY()].getRo() + 0.2 * roCell);
+            delta-=0.2*roCell;
+        }
+        for(CellIndex w:insideSeeds) {
+
+            newmap[w.getX()][w.getY()].setRo(newmap[w.getX()][w.getY()].getRo() + 0.8 * roCell);
+            delta -= 0.8 * roCell;
+        }
+        //System.out.println(roAll);
+        //losowanie reszty
+        Random rng=new Random();
+        delta=delta/k;
+        for(int i=0;i<k;i++){
+            int index=rng.nextInt(insideSeeds.size()-0);
+            int xx=insideSeeds.get(index).getX();
+            int yy=insideSeeds.get(index).getY();
+            newmap[xx][yy].setRo(newmap[xx][yy].getRo()+delta);
+        }
+//4,16 e8
+//        double max=0.0;
+//        for(int i=1;i<(height-1);i++){
+//            for(int j=1;j<(width-1);j++) {
+//                if(newmap[i][j].getRo()>max) { max=newmap[i][j].getRo();
+//                }}}
+//        System.out.println(max);
+                    //sprawdz czy jakakolwiek komurka zrekrystalizowala i zmien jej stan
+        for(int i=1;i<(height-1);i++){
+            for(int j=1;j<(width-1);j++) {
+                if((newmap[i][j].getRo()>=critRo) && (!newmap[i][j].isRecrystalized())){
+                    newmap[i][j].setRecrystalized(true);
+                    newmap[i][j].setRo(0.0);
+                    newmap[i][j].setColor(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+                }
+            }}
+
+                //System.out.println(recrystalCounter+"   "+roAll);
+        /*
+        skonczyc loosowanie reszty
+        parametr k jako text box w gui
+        ustawienia do innej funkcji po sa robione raz a recrystal wywoluje sie w kazdym stepie
+        update map zeby sie wyswietlalo
+        losowanie nowego koloru i zerowanie syslokacjii. czy zerowanie nie wplynie na arraylisty?
+        zacznij od cout ilosci syslokacji czy to co jest w ogole dziala
+         dodaj if jak przekroczy crit value to rekrystalizacja  nowe ziarno z innymmi stanem pochalnia inne
+         */
     }
 
     public int getRadius() {
@@ -540,4 +725,3 @@ public class Logic {
         this.recrystalization = recrystalization;
     }
 }
-
