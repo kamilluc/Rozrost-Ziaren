@@ -1,45 +1,38 @@
 #work in progress
-#@sasiedztwa
+#Sasiedztwa - done
+von neumann
 
-@von neumann
+Moore
 
-@Moore
+Heksagonal left
 
-@Heksagonal left
+Hexagonal rigth
 
-@Hexagonal rigth
+Hexagonal losowe
 
-@Hexagonal losowe
-
-@Pentagonal losowe
+Pentagonal losowe
 
 
-#@warunki brzegowe
-@periodyczne
+#Warunki brzegowe - done
+periodyczne
 
-@nieprioidyczne
+nieprioidyczne
 
-#Losowanie zarodków
-@losowe
+#Losowanie zarodków - done
+random
 
-równomierne
+even
 
-losowe z promieniem R
+random with radius
 
-przez klikniecie
+by clicking
+#Ciągłe losowanie zarodków - done
 
-#Ciągłe losowanie zarodków
+type number of new seeds then press set -> 'pause' button two times
 
-edit box ile zarodkow i jaki promiec r
-zmiana leyout po zmianie rozmiaru
+#Rekrystalizacja - 90%
 
-#termin 19 maja
 
-notes:
-pentagonalne moze nie dzialac po random musi byc w kazdym steepie
-random hex popraw na random steep hex
-poprawic z palca layoutY dla all elementow funkcji buttona
-dodac opcje sadzenia ziaren po kilknieciu (obsluga myszy)
-dodac opcje z promieniem i rownomierne
-dodac animacje
-dodaj opcje na id komorki i stan zmien z bool na int
+#Monte Carlo - 0%
+
+#Refactor - 0%

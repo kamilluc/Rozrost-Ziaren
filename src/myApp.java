@@ -30,6 +30,7 @@ private static int seedRule=0;
     private static int radiusValue=1;
 private static boolean gameState=true;
     private static boolean recrystalization=false;
+    private static int kValue=1000;
     public static void main(String[] args){
         launch(args);
     }
@@ -175,6 +176,7 @@ private static boolean gameState=true;
 checkBox.setSelected(true);
 
 
+
         Button btn3=new Button();
         btn3.setText("RESET");
         btn3.setLayoutX(appWidth*pixelSize+5);
@@ -196,6 +198,14 @@ checkBox.setSelected(true);
         textField5.setLayoutX(appWidth*pixelSize+5);
         textField5.setLayoutY(tf5Label.getLayoutY()+buttonSpace);
 
+
+        Label tf6Label=new Label("K const:");
+        TextField textField6=new TextField("1000");
+        textField6.setLayoutX(appWidth*pixelSize+5);
+        textField6.setLayoutY(tf5Label.getLayoutY()+3*buttonSpace+10);
+        tf6Label.setLayoutX(appWidth*pixelSize+5);
+        tf6Label.setLayoutY(tf5Label.getLayoutY()+2*buttonSpace+10);
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -215,7 +225,7 @@ checkBox.setSelected(true);
                 canvas.setHeight(appHeight*pixelSize);
                 canvas.setWidth(appWidth*pixelSize);
                 numberOfFirstSeeds=Integer.parseInt(textField1.getText());
-
+                kValue=Integer.parseInt(textField6.getText());
                 if(rb8.isSelected()) seedRule=0;
                 else if(rb9.isSelected()) seedRule=1;
                 else if(rb10.isSelected()) seedRule=2;
@@ -251,7 +261,7 @@ checkBox.setSelected(true);
         root.getChildren().add(neighLabel);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
         root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
-        root.getChildren().addAll(tf1Label,tf2Label, checkBox, tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label);
+        root.getChildren().addAll(tf1Label,tf2Label, checkBox, tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label,textField6,tf6Label);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -272,6 +282,7 @@ checkBox.setSelected(true);
         logic.setSeedRule(seedRule);
         logic.setRadius(radiusValue);
         logic.addNewSeeds(newSeeds);
+        logic.setK((double)kValue);
         logic.setRecrystalization(recrystalization);
         logic.start();
 //

@@ -22,6 +22,11 @@ public class Logic {
     boolean recrystalization;
     static int recrystalCounter=0;
     static double roAll=0;
+    static double k=1000;
+
+    ArrayList<CellIndex> outsideSeeds;
+    ArrayList<CellIndex> insideSeeds;
+    boolean lollol=false;
 
     public Logic(int width, int height, int firstGeneration) {
         this.width = (width+2);
@@ -266,6 +271,54 @@ public class Logic {
         }
     }
 
+    private void neumann2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+//            if(!map[i-1][j-1].isRecrystalized()){
+//                newmap[i-1][j-1].setColor(map[i][j].getColor());
+//                newmap[i-1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i-1][j+1].isRecrystalized()){
+//                newmap[i-1][j+1].setColor(map[i][j].getColor());
+//                newmap[i-1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+//            if(!map[i+1][j-1].isRecrystalized()){
+//                newmap[i+1][j-1].setColor(map[i][j].getColor());
+//                newmap[i+1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i+1][j+1].isRecrystalized()){
+//                newmap[i+1][j+1].setColor(map[i][j].getColor());
+//                newmap[i+1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+        }
+    }
+
     private void hexaLeft(int i, int j){
         if(map[i][j].isState()) {
             if(!map[i-1][j-1].isState()){
@@ -321,6 +374,102 @@ public class Logic {
                 newmap[i+1][j].setColor(map[i][j].getColor());
                 newmap[i+1][j].setState(true);
             }
+        }
+    }
+
+    private void hexaLeft2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+            if(!map[i-1][j-1].isRecrystalized()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i-1][j+1].isRecrystalized()){
+//                newmap[i-1][j+1].setColor(map[i][j].getColor());
+//                newmap[i-1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+//            if(!map[i+1][j-1].isRecrystalized()){
+//                newmap[i+1][j-1].setColor(map[i][j].getColor());
+//                newmap[i+1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j+1].isRecrystalized()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+        }
+    }
+
+    private void hexaRight2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+//            if(!map[i-1][j-1].isRecrystalized()){
+//                newmap[i-1][j-1].setColor(map[i][j].getColor());
+//                newmap[i-1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j+1].isRecrystalized()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i+1][j-1].isRecrystalized()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i+1][j+1].isRecrystalized()){
+//                newmap[i+1][j+1].setColor(map[i][j].getColor());
+//                newmap[i+1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
         }
     }
 
@@ -451,6 +600,198 @@ public class Logic {
         }
     }
 
+    private void pentaLeft2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+            if(!map[i-1][j-1].isRecrystalized()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i-1][j+1].isRecrystalized()){
+//                newmap[i-1][j+1].setColor(map[i][j].getColor());
+//                newmap[i-1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i][j+1].isRecrystalized()){
+//                newmap[i][j+1].setColor(map[i][j].getColor());
+//                newmap[i][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+            if(!map[i+1][j-1].isRecrystalized()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+//            if(!map[i+1][j+1].isRecrystalized()){
+//                newmap[i+1][j+1].setColor(map[i][j].getColor());
+//                newmap[i+1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+        }
+    }
+
+    private void pentaRight2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+//            if(!map[i-1][j-1].isRecrystalized()){
+//                newmap[i-1][j-1].setColor(map[i][j].getColor());
+//                newmap[i-1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j+1].isRecrystalized()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+//            if(!map[i][j-1].isRecrystalized()){
+//                newmap[i][j-1].setColor(map[i][j].getColor());
+//                newmap[i][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+//            if(!map[i+1][j-1].isRecrystalized()){
+//                newmap[i+1][j-1].setColor(map[i][j].getColor());
+//                newmap[i+1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j+1].isRecrystalized()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+        }
+    }
+
+    private void pentaTop2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+//            if(!map[i-1][j-1].isRecrystalized()){
+//                newmap[i-1][j-1].setColor(map[i][j].getColor());
+//                newmap[i-1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+//            if(!map[i-1][j].isRecrystalized()){
+//                newmap[i-1][j].setColor(map[i][j].getColor());
+//                newmap[i-1][j].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+//            if(!map[i-1][j+1].isRecrystalized()){
+//                newmap[i-1][j+1].setColor(map[i][j].getColor());
+//                newmap[i-1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i+1][j-1].isRecrystalized()){
+                newmap[i+1][j-1].setColor(map[i][j].getColor());
+                newmap[i+1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j].isRecrystalized()){
+                newmap[i+1][j].setColor(map[i][j].getColor());
+                newmap[i+1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i+1][j+1].isRecrystalized()){
+                newmap[i+1][j+1].setColor(map[i][j].getColor());
+                newmap[i+1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+        }
+    }
+
+    private void pentaBottom2(int i, int j){
+        if(map[i][j].isRecrystalized()) {
+            if(!map[i-1][j-1].isRecrystalized()){
+                newmap[i-1][j-1].setColor(map[i][j].getColor());
+                newmap[i-1][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j].isRecrystalized()){
+                newmap[i-1][j].setColor(map[i][j].getColor());
+                newmap[i-1][j].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i-1][j+1].isRecrystalized()){
+                newmap[i-1][j+1].setColor(map[i][j].getColor());
+                newmap[i-1][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+            if(!map[i][j-1].isRecrystalized()){
+                newmap[i][j-1].setColor(map[i][j].getColor());
+                newmap[i][j-1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+            if(!map[i][j+1].isRecrystalized()){
+                newmap[i][j+1].setColor(map[i][j].getColor());
+                newmap[i][j+1].setRecrystalized(true);
+                newmap[i-1][j-1].setRo(0.0);
+            }
+
+//            if(!map[i+1][j-1].isRecrystalized()){
+//                newmap[i+1][j-1].setColor(map[i][j].getColor());
+//                newmap[i+1][j-1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+//            if(!map[i+1][j].isRecrystalized()){
+//                newmap[i+1][j].setColor(map[i][j].getColor());
+//                newmap[i+1][j].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+//            if(!map[i+1][j+1].isRecrystalized()){
+//                newmap[i+1][j+1].setColor(map[i][j].getColor());
+//                newmap[i+1][j+1].setRecrystalized(true);
+//                newmap[i-1][j-1].setRo(0.0);
+//            }
+
+        }
+    }
+
     private void makePeriodic(){
         for(int i=1;i<(width-1);i++) {
 //            map[0][i] = map[height-2][i];
@@ -488,7 +829,30 @@ public class Logic {
             for (int i = 1; i < height - 1; i++) {
                 for (int j = 1; j < width - 1; j++) {
                    // if (neigh == 0) moore2(i, j);
-                    moore2(i, j);
+                   // moore2(i, j);
+                    if(neigh==0) moore2(i,j);
+                    else if(neigh==1) neumann2(i,j);
+                    else if(neigh==2) hexaLeft2(i,j);
+                    else if(neigh==3) hexaRight2(i,j);
+                    else if(neigh==4) {
+                        boolean tmp=randHex();
+                        if(tmp) hexaLeft2(i,j);
+                        else hexaRight2(i,j);
+//                    if(!choice) hexaLeft(i,j);
+//                    else if(choice) hexaRight(i,j);
+                    }
+//                else if(neigh==5) {
+//                    if(!choice) pentLeft(i,j);
+//                    else if(choice) pentRight(i,j);
+//                }
+                    else if(neigh==5) {
+                        //pentLeft(i,j);
+                        int tmp=randPenta();
+                        if(tmp==0) pentaBottom2(i,j);
+                        else if(tmp==1) pentaTop2(i,j);
+                        else if(tmp==2) pentaLeft2(i,j);
+                        else if(tmp==3) pentaRight2(i,j);
+                    }
 //                    else if (neigh == 1) neumann(i, j);
 //                    else if (neigh == 2) hexaLeft(i, j);
 //                    else if (neigh == 3) hexaRight(i, j);
@@ -620,7 +984,7 @@ public class Logic {
         int y=height-2;
         double A=86710969050178.5;
         double B=9.41268203527779;
-        final double k=1000;
+        // final double k=1000;
         //liicznie ro dla wszystkich krokow czasowych
         ArrayList<Double> roData=new ArrayList<>();
         for(int i=0;i<200;i++){
@@ -632,19 +996,47 @@ public class Logic {
         ///wywalic to 100
         Double critRo=roData.get(65)/(x*y);
 
+
+
+
+
+
+
+
         //indexy komorek na granicy ziaren i wewnatrz
-        ArrayList<CellIndex> outsideSeeds=new ArrayList<>();
-        ArrayList<CellIndex> insideSeeds=new ArrayList<>();
-         for(int i=1;i<(height-1);i++){
-             for(int j=1;j<(width-1);j++){
-               CellIndex cellIndex=new CellIndex(i,j);
-               if(mooreRecrystal(i,j)) insideSeeds.add(cellIndex);
-               else
-                   outsideSeeds.add(cellIndex);
-             }
-         }
+//        ArrayList<CellIndex> outsideSeeds=new ArrayList<>();
+//        ArrayList<CellIndex> insideSeeds=new ArrayList<>();
+//         for(int i=1;i<(height-1);i++){
+//             for(int j=1;j<(width-1);j++){
+//               CellIndex cellIndex=new CellIndex(i,j);
+//               //if(randHex()){hexaLeft2(i,j);
+//               if(mooreRecrystal(i,j)) insideSeeds.add(cellIndex);
+//               else
+//                   outsideSeeds.add(cellIndex);
+//             }
+//         }
+//
+        if(!lollol) {
+            outsideSeeds = new ArrayList<>();
+            insideSeeds = new ArrayList<>();
+            for (int i = 1; i < (height - 1); i++) {
+                for (int j = 1; j < (width - 1); j++) {
+                    CellIndex cellIndex = new CellIndex(i, j);
+                    //if(randHex()){hexaLeft2(i,j);
+                    if (mooreRecrystal(i, j)) insideSeeds.add(cellIndex);
+                    else
+                        outsideSeeds.add(cellIndex);
+                }
+            }
+            lollol = true;
+        }
+
+
+
         recrystalCounter++;
+      //  if(recrystalCounter==200) return;
          //delta ro
+       if(recrystalCounter<200){
         roAll=0;
         for(int i=1;i<(height-1);i++){
             for(int j=1;j<(width-1);j++) {
@@ -663,11 +1055,13 @@ public class Logic {
         //przydzial
         for(CellIndex w:outsideSeeds) {
             newmap[w.getX()][w.getY()].setRo(newmap[w.getX()][w.getY()].getRo() + 0.2 * roCell);
+//            newmap[w.getY()][w.getX()].setRo(newmap[w.getY()][w.getX()].getRo() + 0.2 * roCell);
             delta-=0.2*roCell;
         }
         for(CellIndex w:insideSeeds) {
 
             newmap[w.getX()][w.getY()].setRo(newmap[w.getX()][w.getY()].getRo() + 0.8 * roCell);
+           // newmap[w.getY()][w.getX()].setRo(newmap[w.getY()][w.getX()].getRo() + 0.8 * roCell);
             delta -= 0.8 * roCell;
         }
         //System.out.println(roAll);
@@ -707,7 +1101,7 @@ public class Logic {
         zacznij od cout ilosci syslokacji czy to co jest w ogole dziala
          dodaj if jak przekroczy crit value to rekrystalizacja  nowe ziarno z innymmi stanem pochalnia inne
          */
-    }
+    }}
 
     public int getRadius() {
         return radius;
@@ -723,5 +1117,13 @@ public class Logic {
 
     public void setRecrystalization(boolean recrystalization) {
         this.recrystalization = recrystalization;
+    }
+
+    public double getK() {
+        return k;
+    }
+
+    public  void setK(double k) {
+        Logic.k = k;
     }
 }
