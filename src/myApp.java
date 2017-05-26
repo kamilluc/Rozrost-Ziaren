@@ -133,13 +133,13 @@ private static boolean gameState=true;
 
         //textfieldy
         Label tf1Label=new Label("Seeds count:");
-        TextField textField1=new TextField("15");
+        TextField textField1=new TextField("150");
         Label tf2Label=new Label("Radius:");
         TextField textField2=new TextField("4");
         Label tf3Label=new Label("Height:");
-        TextField textField3=new TextField("300");
+        TextField textField3=new TextField("500");
         Label tf4Label=new Label("Width:");
-        TextField textField4=new TextField("300");
+        TextField textField4=new TextField("500");
         Label tf5Label=new Label("Add new seeds:");
         TextField textField5=new TextField("0");
 
