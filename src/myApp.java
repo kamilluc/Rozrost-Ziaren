@@ -18,19 +18,23 @@ import javafx.util.Duration;
  */
 public class myApp extends Application {
 
-private static int appHeight=100*4;
-private static int appWidth=150*4;
-private static final int pixelSize=1;
-private static int logicNeighbourhood=0;
-private static boolean logicPeriodic=false;
-private static int numberOfFirstSeeds=150;
-private static int seedRule=0;
+    private static int appHeight=100*4;
+    private static int appWidth=150*4;
+    private static final int pixelSize=1;
+    private static int logicNeighbourhood=0;
+    private static boolean logicPeriodic=false;
+    private static int numberOfFirstSeeds=150;
+    private static int seedRule=0;
     private static int newSeeds=0;
     private static boolean startValue=false;
     private static int radiusValue=1;
-private static boolean gameState=true;
+    private static boolean gameState=true;
     private static boolean recrystalization=false;
     private static int kValue=1000;
+    private static int mcIterations=10;
+    private static int numberOfStates=50;
+    private static int newMc=1;
+
     public static void main(String[] args){
         launch(args);
     }
@@ -137,9 +141,9 @@ private static boolean gameState=true;
         Label tf2Label=new Label("Radius:");
         TextField textField2=new TextField("4");
         Label tf3Label=new Label("Height:");
-        TextField textField3=new TextField("500");
+        TextField textField3=new TextField("150");
         Label tf4Label=new Label("Width:");
-        TextField textField4=new TextField("500");
+        TextField textField4=new TextField("150");
         Label tf5Label=new Label("Add new seeds:");
         TextField textField5=new TextField("0");
 
@@ -173,7 +177,7 @@ private static boolean gameState=true;
         CheckBox checkBox=new CheckBox("Recrystallization");
         checkBox.setLayoutX(btn4.getLayoutX());
         checkBox.setLayoutY(btn4.getLayoutY()-buttonSpace-5);
-checkBox.setSelected(true);
+checkBox.setSelected(false);
 
 
 
@@ -206,6 +210,49 @@ checkBox.setSelected(true);
         tf6Label.setLayoutX(appWidth*pixelSize+5);
         tf6Label.setLayoutY(tf5Label.getLayoutY()+2*buttonSpace+10);
 
+
+
+        //monte carlo
+//        n stanow text box
+//        1 opcja losowanie planszy rand z n stanow
+//        2 opcja dzialanie na planszy juz po rozroscie ziaren
+//        zrob liste komorek; rand ele z lissty; sprawdz sasiadow (moore); sumuj energie (energia++ za kazda inna komorke w sasiedztwie);
+//         RAZ podmien te komorke; licz energie jak mniejsza zostaw jak nie zostaw stara; usun komrke z listy; losuj kolejna itd; to wszystko to 1 iteracja mc;
+//        text box iteracje mc
+        Label tf7Label=new Label("Number of states:");
+        TextField textField7=new TextField("10");
+
+        tf7Label.setLayoutX(appWidth*pixelSize+5+200);
+        tf7Label.setLayoutY(0);
+        textField7.setLayoutX(appWidth*pixelSize+5+200);
+        textField7.setLayoutY( tf7Label.getLayoutY()+buttonSpace);
+
+        Label tf8Label=new Label("MC Iterations:");
+        TextField textField8=new TextField("200");
+
+        tf8Label.setLayoutX(appWidth*pixelSize+5+200);
+        tf8Label.setLayoutY(textField7.getLayoutY()+2*buttonSpace);
+        textField8.setLayoutX(appWidth*pixelSize+5+200);
+        textField8.setLayoutY(tf8Label.getLayoutY()+buttonSpace);
+
+        final ToggleGroup group4 = new ToggleGroup();
+        RadioButton rb20=new RadioButton("New MC");
+        rb20.setToggleGroup(group4);
+        rb20.setSelected(true);
+
+        RadioButton rb21=new RadioButton("Old MC");
+        rb21.setToggleGroup(group4);
+        RadioButton rb22=new RadioButton("MC Off");
+        rb22.setToggleGroup(group4);
+
+        rb20.setLayoutX(appWidth*pixelSize+5+200);
+        rb20.setLayoutY(textField8.getLayoutY()+2*buttonSpace);
+        rb21.setLayoutX(appWidth*pixelSize+5+200);
+        rb21.setLayoutY(rb20.getLayoutY()+buttonSpace);
+        rb22.setLayoutX(appWidth*pixelSize+5+200);
+        rb22.setLayoutY(rb21.getLayoutY()+buttonSpace);
+        //koniec mc
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -226,6 +273,15 @@ checkBox.setSelected(true);
                 canvas.setWidth(appWidth*pixelSize);
                 numberOfFirstSeeds=Integer.parseInt(textField1.getText());
                 kValue=Integer.parseInt(textField6.getText());
+                //mc
+                mcIterations=Integer.parseInt(textField8.getText());
+                numberOfStates=Integer.parseInt(textField7.getText());
+                if(rb20.isSelected())newMc=1;
+                else if(rb21.isSelected()) newMc=2;
+                else if(rb22.isSelected()) newMc=0;
+                        //=Boolean.parseBoolean(rb20.getText());
+               // System.out.println(newMc);
+                //end mc
                 if(rb8.isSelected()) seedRule=0;
                 else if(rb9.isSelected()) seedRule=1;
                 else if(rb10.isSelected()) seedRule=2;
@@ -262,6 +318,7 @@ checkBox.setSelected(true);
         root.getChildren().addAll(periodicLabel, rb6, rb7);
         root.getChildren().addAll(seedLabel, rb8,rb9,rb10,rb11, btn2);
         root.getChildren().addAll(tf1Label,tf2Label, checkBox, tf3Label,tf4Label,textField1,textField2,textField3,textField4,btn3,btn4,textField5,tf5Label,textField6,tf6Label);
+        root.getChildren().addAll(textField7,textField8,tf7Label,tf8Label,rb20,rb21,rb22);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -284,6 +341,9 @@ checkBox.setSelected(true);
         logic.addNewSeeds(newSeeds);
         logic.setK((double)kValue);
         logic.setRecrystalization(recrystalization);
+        logic.setNewMc(newMc);
+        logic.setNumberOfStates(numberOfStates);
+        logic.setMcIterations(mcIterations);
         logic.start();
 //
 //        while (logic.emptyFields() > 0){

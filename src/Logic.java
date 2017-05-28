@@ -23,9 +23,16 @@ public class Logic {
     static int recrystalCounter=0;
     static double roAll=0;
     static double k=1000;
+    private int mcIterations=10;
+    private int numberOfStates=50;
+    private int newMc=1;
+    private boolean firstSteepMc=true;
 
     ArrayList<CellIndex> outsideSeeds;
     ArrayList<CellIndex> insideSeeds;
+    ArrayList<Color> mcStates;
+    ArrayList<CellIndex> allSeeds;
+
     boolean lollol=false;
 
     public Logic(int width, int height, int firstGeneration) {
@@ -34,6 +41,30 @@ public class Logic {
         this.firstGeneration = firstGeneration;
         map=new Cell[height+2][width+2];
         newmap=new Cell[height+2][width+2];
+    }
+
+    public int getMcIterations() {
+        return mcIterations;
+    }
+
+    public void setMcIterations(int mcIterations) {
+        this.mcIterations = mcIterations;
+    }
+
+    public int getNumberOfStates() {
+        return numberOfStates;
+    }
+
+    public void setNumberOfStates(int numberOfStates) {
+        this.numberOfStates = numberOfStates;
+    }
+
+    public int getNewMc() {
+        return newMc;
+    }
+
+    public void setNewMc(int newMc) {
+        this.newMc = newMc;
     }
 
     public void show(){
@@ -878,7 +909,38 @@ public class Logic {
                 }
             }
         }
-        else{
+
+
+
+        if(newMc==1 && firstSteepMc==false){
+            System.out.println(mcIterations);
+            mcIterations--;
+            if(mcIterations>0)
+            mcNext();
+            else
+                System.out.println("Koniec MC");
+
+
+        }
+
+        if(newMc==1 && firstSteepMc){
+            mc();
+            firstSteepMc=false;
+        }
+
+        if(newMc==2 && (emptyFields()==0)){
+            //System.out.println(mcIterations);
+            mcIterations--;
+            if(mcIterations>0)
+                mcNext();
+            else {
+                System.out.println("Koniec MC");
+
+            }
+
+        }
+
+        if(newMc==0 || (newMc==2 && emptyFields()!=0)){
 
         for(int i=1;i<height-1;i++){
             for(int j=1;j<width-1;j++){
@@ -924,6 +986,87 @@ public class Logic {
 
 
 
+        }
+    }
+
+    private int energyCounter(int i, int j){
+        int tmp=0;
+
+        if(!(map[i-1][j-1].getColor().equals(map[i][j].getColor()))) tmp++;
+        if(!(map[i-1][j].getColor().equals(map[i][j].getColor()))) tmp++;
+        if(!(map[i-1][j+1].getColor().equals(map[i][j].getColor()))) tmp++;
+
+        if(!(map[i][j-1].getColor().equals(map[i][j].getColor()))) tmp++;
+        if(!(map[i][j+1].getColor().equals(map[i][j].getColor()))) tmp++;
+
+        if(!(map[i+1][j-1].getColor().equals(map[i][j].getColor()))) tmp++;
+        if(!(map[i+1][j].getColor().equals(map[i][j].getColor()))) tmp++;
+        if(!(map[i+1][j+1].getColor().equals(map[i][j].getColor()))) tmp++;
+
+
+        return tmp;
+    }
+    private int energyCounter2(int i, int j){
+        int tmp=0;
+
+        if(!(newmap[i-1][j-1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+        if(!(newmap[i-1][j].getColor().equals(newmap[i][j].getColor()))) tmp++;
+        if(!(newmap[i-1][j+1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+
+        if(!(newmap[i][j-1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+        if(!(newmap[i][j+1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+
+        if(!(newmap[i+1][j-1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+        if(!(newmap[i+1][j].getColor().equals(newmap[i][j].getColor()))) tmp++;
+        if(!(newmap[i+1][j+1].getColor().equals(newmap[i][j].getColor()))) tmp++;
+
+
+        return tmp;
+    }
+
+    public void mcNext(){
+        //lista wszystkich elementow
+        allSeeds=new ArrayList<>();
+        for (int i = 1; i < (height - 1); i++) {
+            for (int j = 1; j < (width - 1); j++) {
+                allSeeds.add(new CellIndex(j,i));
+            }
+        }
+
+        //lista wszystkich stanow
+        ArrayList<Color> states=new ArrayList<>();
+        for (int i = 1; i < (height - 1); i++) {
+            for (int j = 1; j < (width - 1); j++) {
+                Color c=map[i][j].getColor();
+                if(!states.contains(c))
+                    states.add(c);
+            }
+        }
+
+        //random
+        Random rng=new Random();
+
+        //losowanie elementow
+        while(!allSeeds.isEmpty()){
+            int tmpIndex=rng.nextInt(allSeeds.size()-0);
+            int tmpX=allSeeds.get(tmpIndex).getX();
+            int tmpY=allSeeds.get(tmpIndex).getY();
+            allSeeds.remove(tmpIndex);
+
+
+            int energy0=energyCounter2(tmpY,tmpX);
+
+            Color c=map[tmpY][tmpX].getColor();
+            Color c2=states.get(rng.nextInt(states.size()-0));
+
+            //wez inny kolor z listy
+            newmap[tmpY][tmpX].setColor(c2);
+            int energy1=energyCounter2(tmpY,tmpX);
+
+            if(energy1>energy0)
+                newmap[tmpY][tmpX].setColor(c);
+            else
+                newmap[tmpY][tmpX].setColor(c2);
         }
     }
 
@@ -1102,6 +1245,30 @@ public class Logic {
          dodaj if jak przekroczy crit value to rekrystalizacja  nowe ziarno z innymmi stanem pochalnia inne
          */
     }}
+
+    private void mc(){
+
+            //losowanie n stanow
+            mcStates=new ArrayList<>();
+            Random rng=new Random();
+            for(int i=0;i<numberOfStates;i++){
+                mcStates.add(Color.rgb(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255)));
+            }
+
+            for(int i=1;i<height-1;i++){
+                for(int j=1;j<width-1;j++){
+                    //map[i][j]=newmap[i][j];
+
+                    newmap[i][j].setState(true);
+                    newmap[i][j].setColor(mcStates.get(rng.nextInt(mcStates.size()-0)));
+
+                }
+            }
+
+
+
+        }
+
 
     public int getRadius() {
         return radius;

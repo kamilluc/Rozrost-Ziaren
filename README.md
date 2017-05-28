@@ -30,10 +30,10 @@ by clicking
 
 type number of new seeds then press set -> 'pause' button two times
 
-#Rekrystalizacja - 90%
+#Rekrystalizacja - done
 
 
-#Monte Carlo - 0%
+#Monte Carlo - done
 
 #Refactor - 0%
 
